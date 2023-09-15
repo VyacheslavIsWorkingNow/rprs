@@ -3,6 +3,7 @@ package pmatrix
 import (
 	"fmt"
 	"math"
+	"math/rand"
 	"sync"
 )
 
@@ -105,4 +106,16 @@ func calculateChunk(result, a, b Matrix, start, end int) {
 			}
 		}
 	}
+}
+
+func GenerateRandomSquareMatrix(sideCount int) *Matrix {
+	m := InitMatrix(sideCount, sideCount)
+
+	for i := 0; i < sideCount; i++ {
+		for j := 0; j < sideCount; j++ {
+			m.buffer[i][j] = rand.Intn(100)
+		}
+	}
+
+	return m
 }

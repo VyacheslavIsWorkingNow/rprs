@@ -6,9 +6,8 @@ import (
 )
 
 func main() {
-	fmt.Println("Hi")
 
-	// На потоки делим только тогда, когда они делятся нацело
+	// main is here for a view
 
 	a := *pmatrix.InitMatrix(4, 4)
 	b := *pmatrix.InitMatrix(4, 4)
@@ -36,18 +35,3 @@ func main() {
 	fmt.Println(pc.String())
 
 }
-
-/* [
-[30 36 42]
-[66 81 96]
-[102 126 150]
-]
-
-[
-[90 100 110 120]
-[202 228 254 280]
-[314 356 398 440]
-[426 484 542 600]
-]
-
-*/
