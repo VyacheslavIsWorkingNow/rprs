@@ -2,12 +2,13 @@ package main
 
 import (
 	"fmt"
+	"lab1/graphic"
 	"lab1/pmatrix"
 )
 
-func main() {
+const pathBench = `/Users/slavaruswarrior/Documents/GitHub/rprs/lab1/pmatrix/benchmark.txt`
 
-	// main is here for a view
+func main() {
 
 	a := *pmatrix.InitMatrix(4, 4)
 	b := *pmatrix.InitMatrix(4, 4)
@@ -33,5 +34,7 @@ func main() {
 	pc, _ := pmatrix.ParallelMulti(a, b, 2)
 
 	fmt.Println(pc.String())
+
+	graphic.Plot(pathBench)
 
 }
