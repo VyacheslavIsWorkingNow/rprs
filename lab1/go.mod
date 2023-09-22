@@ -1,4 +1,4 @@
-module lab1
+module github.com/VyacheslavIsWorkingNow/rprs/lab1
 
 go 1.20
 

@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"lab1/graphic"
-	"lab1/pmatrix"
+	"github.com/VyacheslavIsWorkingNow/rprs/lab1/graphic"
+	"github.com/VyacheslavIsWorkingNow/rprs/lab1/pmatrix"
 )
 
 const pathBench = `/Users/slavaruswarrior/Documents/GitHub/rprs/lab1/pmatrix/benchmark.txt`
