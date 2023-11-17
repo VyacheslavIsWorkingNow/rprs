@@ -3,45 +3,43 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/VyacheslavIsWorkingNow/rprs/lab2/iterations"
-	"gonum.org/v1/gonum/mat"
 	"time"
+
+	"gonum.org/v1/gonum/mat"
+
+	"github.com/VyacheslavIsWorkingNow/rprs/lab2/generator"
+	"github.com/VyacheslavIsWorkingNow/rprs/lab2/iterations"
 )
 
+var size = 1000
+
 func main() {
-	N := 4
 
-	A := mat.NewDense(N, N, nil)
-	for i := 0; i < N; i++ {
-		A.Set(i, i, 2.0)
-		for j := 0; j < N; j++ {
-			if i != j {
-				A.Set(i, j, 1.0)
-			}
-		}
-	}
+	startTime := time.Now()
+	A := generator.GenMatrix(size)
+	bData := generator.GenVectorConstN(size)
 
-	bData := make([]float64, N)
-	for i := 0; i < N; i++ {
-		bData[i] = float64(N + 1)
-	}
-	b := mat.NewVecDense(N, bData)
+	b := mat.NewVecDense(size, bData)
 
-	xData := make([]float64, N)
-	x := mat.NewVecDense(N, xData)
+	xData := generator.GenRandomVector(size)
+	x := mat.NewVecDense(size, xData)
 
-	epsilon := 0.00001
+	epsilon := 1e-5
 
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*60)
+	defer cancel()
+	_ = iterations.SimpleIteration(ctx, A, b, x, epsilon)
+	// printResult(A, result, b, x, epsilon)
+
+	fmt.Println("Program time:", time.Since(startTime))
+}
+
+func printResult(A *mat.Dense, result, b, x *mat.VecDense, epsilon float64) {
 	fmt.Println("Матрица A:")
 	fmt.Println(mat.Formatted(A))
 	fmt.Println("Вектор b:", b)
 	fmt.Println("Начальное приближение x:", x)
 	fmt.Println("Желаемая точность:", epsilon)
-
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
-	defer cancel()
-	result := iterations.SimpleIteration(ctx, A, b, x, epsilon)
-
 	fmt.Println("Результат:")
-	fmt.Printf("%+v", mat.Formatted(result))
+	fmt.Printf("%+v\n", mat.Formatted(result))
 }
