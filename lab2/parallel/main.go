@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
 	"github.com/VyacheslavIsWorkingNow/rprs/lab2/generator"
@@ -41,11 +42,13 @@ func main() {
 		log.Fatalf("can't broadcast buf %e", errB)
 	}
 
-	matrixChunk := generator.GenChunkMatrix(start, end, size)
-	freeConst := generator.GenCheckFreeVector(matrixChunk.RawMatrix().Rows, size)
-	solver := pariter.NewSolverWithVecSeparation(comm, matrixChunk, freeConst, size, eps)
+	baseMatrixChunk := generator.GenChunkMatrix(start, end, size)
+	freeConst := generator.GenCheckFreeVector(baseMatrixChunk.RawMatrix().Rows, size)
+	solver := pariter.NewSolverWithVecSeparation(comm, baseMatrixChunk, freeConst, size, eps)
 
-	s := solver.FindSolution()
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*60)
+	defer cancel()
+	s := solver.FindSolution(ctx)
 	fullRes := make([]float64, size)
 
 	errA := comm.AllGatherF64(fullRes, s.RawVector().Data)
@@ -55,13 +58,13 @@ func main() {
 
 	defer fmt.Println("Success")
 	fmt.Println("Program time:", time.Since(startTime))
+
+	fmt.Println(fullRes)
 }
 
 func initializationMpiMatrix(comm *mpi.Comm) (start int, end int, buff []float64) {
 
-	chunkSize := size / comm.Size()
-	start = comm.Rank() * chunkSize
-	end = (comm.Rank() + 1) * chunkSize
+	start, end = pariter.GetMpiChunkParams(comm, size)
 
 	buff = make([]float64, size)
 
