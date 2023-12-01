@@ -4,11 +4,13 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"github.com/VyacheslavIsWorkingNow/rprs/lab2/generator"
-	"github.com/VyacheslavIsWorkingNow/rprs/lab2/pariter"
-	"github.com/emer/empi/mpi"
 	"log"
 	"time"
+
+	"github.com/emer/empi/mpi"
+
+	"github.com/VyacheslavIsWorkingNow/rprs/lab2/generator"
+	"github.com/VyacheslavIsWorkingNow/rprs/lab2/pariter"
 )
 
 const (
@@ -57,9 +59,9 @@ func main() {
 	}
 
 	defer fmt.Println("Success")
-	fmt.Println("Program time:", time.Since(startTime))
+	defer fmt.Println("Program time:", time.Since(startTime))
 
-	fmt.Println(fullRes)
+	// fmt.Println(fullRes)
 }
 
 func initializationMpiMatrix(comm *mpi.Comm) (start int, end int, buff []float64) {

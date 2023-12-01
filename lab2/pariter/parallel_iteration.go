@@ -77,8 +77,6 @@ func (s *SolverWithVecSeparation) FindSolution(ctx context.Context) *mat.VecDens
 
 	s.iterateLoop(ctx, res, &buff, &iteration)
 
-	log.Printf("Завершено после %d итераций\n", iteration)
-
 	return res
 }
 

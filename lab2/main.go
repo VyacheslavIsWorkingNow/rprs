@@ -11,7 +11,7 @@ import (
 	"github.com/VyacheslavIsWorkingNow/rprs/lab2/iterations"
 )
 
-var size = 1000
+var size = 10000
 
 func main() {
 
