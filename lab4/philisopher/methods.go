@@ -17,8 +17,20 @@ func (p *philosopher) eat() {
 }
 
 func (p *philosopher) getForks() {
+	fmt.Printf("left fork for p: %d\n", p.id)
 	p.leftFork.Lock()
-	p.rightFork.Lock()
+	timer := time.NewTimer(time.Millisecond * time.Duration(rand.Intn(1000)+10))
+	select {
+	case <-timer.C:
+		p.leftFork.Unlock()
+		fmt.Printf("left put fork for p: %d\n", p.id)
+		return
+	case <-time.After(time.Millisecond * time.Duration(rand.Intn(10))):
+		p.rightFork.Lock()
+		fmt.Printf("right fork for p: %d\n", p.id)
+		timer.Stop()
+		return
+	}
 }
 
 func (p *philosopher) putForks() {
