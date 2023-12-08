@@ -2,7 +2,7 @@ package philisopher
 
 import (
 	"context"
-	"fmt"
+	"log"
 	"sync"
 )
 
@@ -18,7 +18,7 @@ func PhilosopherRoutineWithTimeout(ctx context.Context, ph *philosopher, wg *syn
 	for {
 		select {
 		case <-ctx.Done():
-			fmt.Println("time out")
+			log.Println("time out")
 			return
 		default:
 		}
